@@ -1,0 +1,43 @@
+<!-- Documentation https://elements.polymer-project.org/elements/firebase-element?active=firebase-collection -->
+
+<!-- Firebase elements -->
+<link rel="import" href="../../../bower_components/firebase-element/firebase.html">
+<link rel="import" href="../../../bower_components/firebase-element/firebase-collection.html">
+<link rel="import" href="../../../bower_components/firebase-element/firebase-document.html">
+
+<dom-module id="protocol-responses">
+
+<<template>
+  <firebase-collection
+    location="https://zebras.firebaseio.com/protocols"
+    data="{{protocols}}">
+  </firebase-collection>
+  
+  <!-- https://www.polymer-project.org/1.0/docs/devguide/data-binding.html#path-binding -->
+  <template is="dom-repeat" items="[[protocols]]">
+    <h4>[[item.__firebaseKey__]]</h4>
+    <span>Question: </span><span>[[item.0.question]]</span>
+    <br>
+    <span>Answer: </span><span>[[item.0.answer]]</span>
+    <br><br>
+    <span>Question: </span><span>[[item.1.question]]</span>
+    <br>
+    <span>Answer: </span><span>[[item.1.answer]]</span>
+    <br><br>
+    <span>Question: </span><span>[[item.2.question]]</span>
+    <br>
+    <span>Answer: </span><span>[[item.2.answer]]</span>
+  </template>
+
+</template>
+
+<script>
+  Polymer({
+    is: 'protocol-responses',
+    properties: {
+      protocols: Array
+    }
+  });
+</script>
+ 
+</dom-module>

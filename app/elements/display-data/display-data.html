@@ -1,0 +1,166 @@
+<!-- Documentation https://elements.polymer-project.org/elements/firebase-element?active=firebase-collection -->
+
+<!-- Firebase elements -->
+<link rel="import" href="../../../bower_components/firebase-element/firebase.html">
+<link rel="import" href="../../../bower_components/firebase-element/firebase-collection.html">
+<link rel="import" href="../../../bower_components/firebase-element/firebase-document.html">
+
+<dom-module id="display-data">
+
+<template>
+
+  <style>
+    :host {
+      padding: 20px;
+      background: #fafafa;
+      position: relative;
+      background-color: gray;
+    }
+  </style>
+
+  
+  <firebase-collection
+    location="https://zebras.firebaseio.com/protocols"
+    data="{{protocols}}">
+  </firebase-collection>
+  
+  <!-- https://www.polymer-project.org/1.0/docs/devguide/data-binding.html#path-binding -->
+  <!--
+  <template is="dom-repeat" items="[[protocols]]">
+    <h4>[[item.__firebaseKey__]]</h4>
+    <span>Question: </span><span>[[item.0.question]]</span>
+    <br>
+    <span>Answer: </span><span>[[item.0.answer]]</span>
+    <br><br>
+    <span>Question: </span><span>[[item.1.question]]</span>
+    <br>
+    <span>Answer: </span><span>[[item.1.answer]]</span>
+    <br><br>
+    <span>Question: </span><span>[[item.2.question]]</span>
+    <br>
+    <span>Answer: </span><span>[[item.2.answer]]</span>
+  </template>
+  -->
+  <br>
+
+     <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+      <template is="dom-repeat" items="[[protocols]]">
+        <thead>
+        <tr>
+          <th class="mdl-data-table__cell--non-numeric">Response Key</th>
+          <th>[[item.0.question]]</th>
+          <th>[[item.1.question]]</th>
+          <th>[[item.2.question]]</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mdl-data-table__cell--non-numeric">[[item.__firebaseKey__]]</td>
+          <td>[[item.0.answer]]</td>
+          <td>[[item.1.answer]]</td>
+          <td>[[item.2.answer]]</td>
+        </tr>
+      </tbody>
+      </template>
+    </table>
+
+  <br><br>
+  <!-- Raised button -->
+  <!--
+  <button id="dl" on-tap="downloadData" class="mdl-button mdl-js-button mdl-button--raised">
+    Download Data 
+    <iron-icon icon="file-download"></iron-icon>
+  </button>
+  -->
+  <!--
+  <br><br><br>
+  <a href="file" download="data2.json"><button id="dl2" on-tap="downloadData" class="mdl-button mdl-js-button mdl-button--raised">
+    Download Data 
+    <iron-icon icon="file-download"></iron-icon>
+  </button></a>
+  -->
+  <br><br><br>
+  <div id="dl3" hidden$="{{downloadData()}}"></div>
+
+  <br><br><br>
+  <!-- 
+  <div id="dl3">
+    <button on-tap="downloadData" class="mdl-button mdl-js-button mdl-button--raised">
+    Download Data 
+    <iron-icon icon="file-download"></iron-icon>
+  </button>
+  </div>
+  -->
+
+
+<!--
+  <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+      <thead>
+        <tr>
+          <th class="mdl-data-table__cell--non-numeric">Material</th>
+          <th>Quantity</th>
+          <th>Unit price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mdl-data-table__cell--non-numeric">Acrylic (Transparent)</td>
+          <td>25</td>
+          <td>$2.90</td>
+        </tr>
+        <tr>
+          <td class="mdl-data-table__cell--non-numeric">Plywood (Birch)</td>
+          <td>50</td>
+          <td>$1.25</td>
+        </tr>
+        <tr>
+          <td class="mdl-data-table__cell--non-numeric">Laminate (Gold on Blue)</td>
+          <td>10</td>
+          <td>$2.35</td>
+        </tr>
+      </tbody>
+    </table>
+  -->
+
+</template>
+
+<script>
+  Polymer({
+    is: 'display-data',
+    
+    properties: {
+      protocols: {
+        type: Array
+      }
+    },
+
+    downloadData: function() {
+
+        var ref = new Firebase("https://zebras.firebaseio.com/protocols");
+        ref.once("value", function(snapshot) {
+          var dataObj = snapshot.val();
+          //console.log(JSON.stringify(dataObj));
+          data = 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(dataObj));
+          //TODO: Format data for readability in download file 
+          //window.open(data, 'My DL', 'width=40, height=40') // Displays data in a new window
+          
+          //http://jsfiddle.net/cowboy/hHZa9/ -> Works with div line in template
+          //$('<a href="data:' + data + '" download="data.json">download JSON</a>').appendTo('#dl3');
+
+          $('<a href="data:' + data + '" download="data.json"><button on-tap="downloadData" class="mdl-button mdl-js-button mdl-button--raised">Download Data <iron-icon icon="file-download"></iron-icon></button></a>').appendTo('#dl3');
+
+
+          // http://yukikodesign.com/orangutangy/?p=425
+          /*
+          var JsonData = JSON.stringify(data);
+          var blob = new Blob([JsonData], {type: "application/json"});
+          var downloadUrl = URL.createObjectURL(blob);
+          document.getElementById("dl").href = downloadUrl;
+          */
+        }); 
+    }
+
+  });
+</script>
+ 
+</dom-module>
