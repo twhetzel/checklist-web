@@ -80,12 +80,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     
     <!-- Firebase location: -->
     <input hidden value="https://zebras.firebaseio.com" size="400" disabled>
-        <paper-menu class="list" attr-for-selected="data-route" selected="{{route}}" on-iron-select="onMenuSelect">
-          <a data-route="display-data" href="{{displayDataRoute(statusKnown, user)}};">
-            <iron-icon icon="assessment"></iron-icon>
-            <span>View Data</span>
-          </a>
-        </paper-menu>      
+    <!-- Menu Item Formatting --> 
+    <paper-menu class="list" attr-for-selected="data-route" selected="{{route}}" on-iron-select="onMenuSelect">
+      <a data-route="display-data" href="{{displayDataRoute(statusKnown, user)}};">
+        <iron-icon icon="assessment"></iron-icon>
+          <span>View Data</span>
+        </a>
+    </paper-menu>      
   </template>
 </dom-module>
 <script>
